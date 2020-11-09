@@ -1,49 +1,47 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import Card from './Card';
 
 
 function HomeBusqueda(){
 
     const [inputSeries, setinputSeries] = useState('')
+    const [data, setdata] = useState([])
+
+ // API CONSULT
+ const sendSearch = ({inputSeries}) => {
+    axios.get(`http://api.tvmaze.com/search/shows?q=${inputSeries}`)
+        .then((response) => {
+            console.log(`http://api.tvmaze.com/search/shows?q=${inputSeries}`)
+            console.log(response.data)
+            setdata(response.data)
+        })
+}
 
 
-    // API CONSULT
-    sendSearch = (inputSeries) => {
-        axios.get(`http://api.tvmaze.com/search/shows?q=girls${inputSeries}`)
-            .then((response) => {
-              console.log(response.data)
-              setState({ results: response.data })
-            })
-    }
-
- 
         return(
-            (<div>
-                <h1>Busqueda de Series</h1>
+            <div>
+                <h1>Busqueda de Series Televisivas</h1>
                 <br></br>
                 <input
-                    placeholder="Busqueda"
-                    name="inputSeries"
-                    className="search-input"
+                    placeholder="Serie-Name"
+                    name="inputToSearch"
+                    className="input-Search"
                     onChange={(event) => {
                         setinputSeries({inputSeries: event.target.value})
                     }}
                 ></input>
                 <button 
-                className="search-button"
-                onClick = {() => emitSearch(this.state.inputSeries)}
+                    className="button-search"
+                    onClick = {() => sendSearch(inputSeries)}
                 >Buscar</button>
-            </div>)
+                <br></br>
+                 <Card bundle = {data}></Card>                
+            </div>
 
-           ( <div>
-               {results.map((serie) =>
-                    
-                )}
+        )      
 
-            </div>)
-
-        )
     }
 
 
